@@ -7,10 +7,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// Amount of internal and external links
-// Amount of inaccessible links
-func FindLogins(doc goquery.Document) {
-	// Find the review items
+func FindLogins(doc goquery.Document) bool {
+
+	var foundLogin bool
+
 	doc.Find("form").Each(func(_ int, s *goquery.Selection) {
 
 		s.Find("input").Each(func(i int, s *goquery.Selection) {
@@ -26,9 +26,12 @@ func FindLogins(doc goquery.Document) {
 
 			if typ == "password" || typ == "submit" {
 				fmt.Printf("Login found, %s", typ)
+				foundLogin = true
 			}
 
 		})
 	})
+
+	return foundLogin
 
 }
