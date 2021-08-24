@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 
+	helpers "htmlParserGo/helpers"
 	headings "htmlParserGo/htmlHeadings"
 	links "htmlParserGo/htmlLinks"
 	login "htmlParserGo/htmlLogin"
@@ -13,20 +13,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 )
-
-func isValidUrl(toTest string) bool {
-	_, err := url.ParseRequestURI(toTest)
-	if err != nil {
-		return false
-	}
-
-	u, err := url.Parse(toTest)
-	if err != nil || u.Scheme == "" || u.Host == "" {
-		return false
-	}
-
-	return true
-}
 
 func pingURL(url string) {
 	res, err := http.Get(url)
@@ -60,18 +46,12 @@ func pingURL(url string) {
 }
 
 func main() {
-	// check if valid URL.
 	// https://www.stealmylogin.com/demo.html
 
 	// "https://www.htmldog.com/guides/html/beginner/headings/"
 	urlToProccess := "https://github.com/"
-	isValidUrl(urlToProccess)
+	helpers.IsValidUrl(urlToProccess)
 	pingURL(urlToProccess)
-	// check HTML version.
-	// parse for headers in each level.
-	// Amount of internal and external links
-	// Amount of inaccessible links
-	// If a page contains a login form
 }
 
 // func customRouteHandler(w http.ResponseWriter, r *http.Request) {
