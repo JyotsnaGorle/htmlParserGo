@@ -24,7 +24,6 @@ func pingURL(url string) {
 		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 
-	fmt.Print(res.Header.Get("!DOCTYPE"))
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
@@ -47,8 +46,8 @@ func pingURL(url string) {
 
 func main() {
 	// https://www.stealmylogin.com/demo.html
-
 	// "https://www.htmldog.com/guides/html/beginner/headings/"
+
 	urlToProccess := "https://github.com/"
 	helpers.IsValidUrl(urlToProccess)
 	pingURL(urlToProccess)
