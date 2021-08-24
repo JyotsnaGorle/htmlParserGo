@@ -8,6 +8,7 @@ import (
 
 	headings "htmlParserGo/htmlHeadings"
 	links "htmlParserGo/htmlLinks"
+	login "htmlParserGo/htmlLogin"
 	version "htmlParserGo/htmlVersion"
 
 	"github.com/PuerkitoBio/goquery"
@@ -54,12 +55,13 @@ func pingURL(url string) {
 
 	links.FindLinks(*doc)
 	headings.FindHeadings(*doc)
+	login.FindLogins(*doc)
 
 }
 
 func main() {
 	// check if valid URL.
-
+	// https://www.stealmylogin.com/demo.html
 	urlToProccess := "https://www.htmldog.com/guides/html/beginner/headings/"
 	isValidUrl(urlToProccess)
 	pingURL(urlToProccess)
