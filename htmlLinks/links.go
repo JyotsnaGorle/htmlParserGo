@@ -1,35 +1,47 @@
 package htmlLinks
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
-var internalLinks []string
-var externalLinks []string
+type Links struct {
+	Internal    int
+	External    int
+	Inaccesable int
+}
 
-var invalidLinks []string
+func FindLinks(doc goquery.Document) Links {
 
-// Amount of internal and external links
-// Amount of inaccessible links
-func FindLinks(doc goquery.Document) {
-	// Find the review items
+	var internalLinks []string
+	var externalLinks []string
+
+	var invalidLinks []string
+
 	doc.Find("a").Each(func(i int, s *goquery.Selection) {
-		// For each item found, get the title
+
 		link, exists := s.Attr("href")
 
 		if !exists {
 			return
 		}
-
-		fmt.Printf("Review %d: %s\n", i, link)
+		FindInternalAndExternalLinks(link, internalLinks, externalLinks)
 	})
+
+	FindInaccesibleLinks(externalLinks, invalidLinks)
+
+	return Links{
+		Internal:    len(internalLinks),
+		External:    len(externalLinks),
+		Inaccesable: len(invalidLinks),
+	}
+
 }
 
-func FindInternalAndExternalLinks(urlToProccess string) {
+func FindInternalAndExternalLinks(urlToProccess string, internalLinks []string, externalLinks []string) {
+
 	u, err := url.Parse(urlToProccess)
 	if err != nil {
 		return
@@ -40,21 +52,20 @@ func FindInternalAndExternalLinks(urlToProccess string) {
 	} else {
 		externalLinks = append(externalLinks, urlToProccess)
 	}
-
 }
 
-func FindInaccesibleLinks(links []string) {
+func FindInaccesibleLinks(links []string, invalidLinks []string) {
 	for _, link := range links {
 		_, err := url.Parse(link)
 		if err != nil {
 			return
 		}
 
-		pingUrl(link)
+		pingUrl(link, invalidLinks)
 	}
 }
 
-func pingUrl(urlToPing string) {
+func pingUrl(urlToPing string, invalidLinks []string) {
 	res, err := http.Get(urlToPing)
 	if err != nil {
 		invalidLinks = append(invalidLinks, urlToPing)
