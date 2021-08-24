@@ -13,8 +13,9 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func pingURL(url string) {
-	res, err := http.Get(url)
+func pingURL(urlToProccess string) {
+
+	res, err := http.Get(urlToProccess)
 	if err != nil {
 		log.Fatal(err)
 	}
