@@ -2,23 +2,21 @@ package htmlHeadings
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
 func FindHeadings(doc goquery.Document) {
 
-	n := 5
-	values := make([]int, n)
-	for i := range values {
+	headingLevels := map[string]int{"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}
+	for heading, headingCount := range headingLevels {
 
-		selector := "h" + strconv.Itoa(i+1)
+		selector := heading
 
 		doc.Find(selector).Each(func(i int, s *goquery.Selection) {
-			values[i] = values[i] + 1
+			headingCount = headingCount + 1
 		})
 	}
 
-	fmt.Print(values)
+	fmt.Print(headingLevels)
 }

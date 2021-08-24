@@ -62,7 +62,9 @@ func pingURL(url string) {
 func main() {
 	// check if valid URL.
 	// https://www.stealmylogin.com/demo.html
-	urlToProccess := "https://www.htmldog.com/guides/html/beginner/headings/"
+
+	// "https://www.htmldog.com/guides/html/beginner/headings/"
+	urlToProccess := "https://github.com/"
 	isValidUrl(urlToProccess)
 	pingURL(urlToProccess)
 	// check HTML version.
