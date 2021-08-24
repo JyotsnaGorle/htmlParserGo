@@ -7,7 +7,6 @@ import (
 
 	helpers "htmlParserGo/helpers"
 	headings "htmlParserGo/htmlHeadings"
-	links "htmlParserGo/htmlLinks"
 	login "htmlParserGo/htmlLogin"
 	version "htmlParserGo/htmlVersion"
 
@@ -38,8 +37,9 @@ func pingURL(url string) {
 	version := version.CheckDoctype(html)
 	fmt.Print(version)
 
-	links.FindLinks(*doc)
-	headings.FindHeadings(*doc)
+	// links.FindLinks(*doc)
+	headingResult := headings.FindHeadings(*doc)
+	fmt.Println(headingResult)
 	login.FindLogins(*doc)
 
 }
@@ -48,7 +48,7 @@ func main() {
 	// https://www.stealmylogin.com/demo.html
 	// "https://www.htmldog.com/guides/html/beginner/headings/"
 
-	urlToProccess := "https://github.com/"
+	urlToProccess := "https://www.htmldog.com/guides/html/beginner/headings/"
 	helpers.IsValidUrl(urlToProccess)
 	pingURL(urlToProccess)
 }
