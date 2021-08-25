@@ -1,8 +1,9 @@
 ## HTML Parser using Golang and Go-templates
 
-A simple web application used to parse an html url for meta information.
+A simple web application used to parse a url for meta information in the html page.
 
-## Software requirements
+## Software specifications
+    * Runs a Golang server in the backend, and Golang templates for frontend.
 	* Recommended IDE Visual Studio Code.
     * Installed Golang in the machine. 
     * Use the following [link](https://golang.org/doc/install) for Golang installation.
@@ -10,6 +11,7 @@ A simple web application used to parse an html url for meta information.
 ## Build and Run the application
 	* In order to build the project: type the command ``go build main.go`` in the root folder via the terminal.
 	* To run the built binary, use ``go run main.go`` in the root folder via the terminal.
+    * The application runs server in ``localhost:8000`` which can then be accessed by any browser.
 
 ## Sample output
 
