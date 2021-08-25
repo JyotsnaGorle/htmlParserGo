@@ -3,7 +3,6 @@ package htmlHeadings
 import (
 	"log"
 	"net/http"
-	"reflect"
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
@@ -13,40 +12,26 @@ func TestHtmlHeadings(t *testing.T) {
 
 	testUrl := "https://www.htmldog.com/guides/html/beginner/headings/"
 
-	expectedResult := []HeadingsResult{
-		{
-			Heading: "h1",
-			Count:   1},
-		{
-			Heading: "h2",
-			Count:   4},
-		{
-			Heading: "h3",
-			Count:   2},
-		{
-			Heading: "h4",
-			Count:   0},
-		{
-			Heading: "h5",
-			Count:   0},
-		{
-			Heading: "h6",
-			Count:   0},
-	}
+	expectedResult := map[string]int{"h1": 1, "h2": 4, "h3": 2, "h4": 0, "h5": 0, "h6": 0}
 
-	doc := pingURL(testUrl)
+	doc, err := pingURL(testUrl)
+
+	if err != nil {
+		t.Errorf("Failed: could not ping url")
+	}
 	result := FindHeadings(*doc)
 
-	if !reflect.DeepEqual(expectedResult, result) {
-		t.Errorf("Failed: expected headers not found")
-		// TODO: log mismatch
+	for _, each := range result {
+		if expectedResult[each.Heading] != each.Count {
+			t.Errorf("Failed: expected headers not found for %s - expected : %d, actual : %d", each.Heading, expectedResult[each.Heading], each.Count)
+		}
 	}
 }
 
-func pingURL(url string) *goquery.Document {
+func pingURL(url string) (*goquery.Document, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
@@ -56,8 +41,8 @@ func pingURL(url string) *goquery.Document {
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return doc
+	return doc, nil
 }
