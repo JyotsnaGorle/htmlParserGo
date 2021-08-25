@@ -13,6 +13,10 @@ A simple web application used to parse a url for meta information in the html pa
 	* To run the built binary, use ``go run main.go`` in the root folder via the terminal.
     * The application runs server in ``localhost:8000`` which can then be accessed by any browser.
 
+## Run unit tests
+    * Via the terminal in the project folder : to run all tests - ``go test .\...``
+    * Via the terminal in the project folder : to run individual modules tests - ``go test .\<module-folder-name>``
+
 ## Sample output - in web
 
     Link: https://www.github.com/
