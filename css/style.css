@@ -4,7 +4,7 @@ html, body
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: helvetica;
+	font-family:courier,arial,helvetica;
 	vertical-align: baseline;
 }  
 
@@ -19,18 +19,18 @@ html, body
     -ms-transform: translate(-50%, -50%);
     
     font-size: 20px;
-    background-color: #e91e632e;
-    border: #e91e63 1px solid;
     padding: 25px;
     z-index: 100;
     align-items: center;
     text-align: center;
-    border-radius: 10px;
   }
 
   .urlInput {
       text-align: center;
       width: 50%;
+      background-color: #c7c7c72e;
+      border-radius: 10px;
+
   }
 
   input.url {
@@ -103,3 +103,24 @@ html, body
     }
   }
 
+.big {
+  text-align: left;
+  background-color: #e4dbde2e;
+  padding: 5%;
+  margin: 5%;
+  font-size: 20px;
+  color: #636363;
+}
+
+section.section {
+  border-bottom: #ccc 1px solid;
+}
+
+ul {
+  list-style: none;
+}
+ul li::before {
+  content: "-";
+  display: inline-block;
+  margin-right: 0.2rem;
+}

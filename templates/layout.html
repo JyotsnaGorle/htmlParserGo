@@ -5,7 +5,7 @@
     <title>URL Parser - Results</title>
   </head>
   <body>
-    <div class="centered">
+    <div class="big">
     <section class="section meta">
       <p>Link: {{.UrlToParse}}</p>
       <p>Html version: {{ .Version }}</p>
@@ -24,9 +24,9 @@
     <section class="section links">
       <p>Links:</p>
       <ul>
-          <li class="internal">{{.Links.Internal}}</li>
-          <li class="external">{{.Links.External}}</li>
-          <li class="inaccesible">{{.Links.Inaccesable}}</li>
+          <li class="internal">Internal links count: {{.Links.Internal}}</li>
+          <li class="external">External links count: {{.Links.External}}</li>
+          <li class="inaccesible">Inaccesable links count: {{.Links.Inaccesable}}</li>
       </ul>
     </section>
 
