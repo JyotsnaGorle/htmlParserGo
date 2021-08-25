@@ -4,7 +4,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-//TODO: make struct type for results
 type HeadingsResult struct {
 	Heading string
 	Count   int

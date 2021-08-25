@@ -57,7 +57,13 @@ func findInternalAndExternalLinks(urlToProccess string, internalLinks *[]string,
 
 func findInaccesibleLinks(links []string, invalidLinks *[]string) {
 
-	gaurd := make(chan struct{}, 5)
+	concurrencyLimit := 2
+
+	if len(links) > 1 {
+		concurrencyLimit = len(links) / 2
+	}
+
+	gaurd := make(chan struct{}, concurrencyLimit)
 	wg := sync.WaitGroup{}
 
 	for _, link := range links {
