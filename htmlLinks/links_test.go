@@ -9,10 +9,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func pingURL(url string) *goquery.Document {
+func pingURL(url string) (*goquery.Document, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
@@ -22,10 +22,10 @@ func pingURL(url string) *goquery.Document {
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return doc
+	return doc, nil
 }
 
 func TestFindHtmlLinks(t *testing.T) {
@@ -37,7 +37,11 @@ func TestFindHtmlLinks(t *testing.T) {
 		Inaccesable: 1,
 	}
 
-	doc := pingURL(testUrl)
+	doc, err := pingURL(testUrl)
+
+	if err != nil {
+		t.Errorf("Failed: could not ping url")
+	}
 	result := FindLinks(*doc)
 
 	if !reflect.DeepEqual(expectedResult, result) {

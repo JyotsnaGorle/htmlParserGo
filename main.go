@@ -24,11 +24,11 @@ type HtmlParseResult struct {
 	HasLogin   bool
 }
 
-func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
+func pingURL(urlToProccess string, finalResult *HtmlParseResult) error {
 
 	res, err := http.Get(urlToProccess)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
@@ -38,12 +38,12 @@ func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	html, err := doc.Html()
 	if err != nil {
-		return
+		return err
 	}
 
 	finalResult.Version = version.CheckDoctype(html)
@@ -52,6 +52,7 @@ func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
 	finalResult.Links = links.FindLinks(*doc)
 	finalResult.HasLogin = login.FindLogins(*doc)
 
+	return nil
 }
 
 func customRouteHandler(w http.ResponseWriter, r *http.Request) {
@@ -81,8 +82,12 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 
-			pingURL(urlToProccess, &finalResult)
-			tmpl.Execute(w, finalResult)
+			if err := pingURL(urlToProccess, &finalResult); err != nil {
+				http.Error(w, "404 bad url.", http.StatusNotFound)
+			} else {
+				tmpl.Execute(w, finalResult)
+
+			}
 
 			/*
 				TO USE: in case of REST server application:

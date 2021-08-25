@@ -11,7 +11,13 @@ import (
 func TestLoginDoesNotExists(t *testing.T) {
 
 	testUrl := "https://www.stealmylogin.com"
-	doc := pingURL(testUrl)
+
+	doc, err := pingURL(testUrl)
+
+	if err != nil {
+		t.Errorf("Failed: could not ping url")
+	}
+
 	if FindLogins(*doc) {
 		t.Errorf("Failed: login found %s", testUrl)
 	}
@@ -21,17 +27,23 @@ func TestLoginDoesNotExists(t *testing.T) {
 func TestLoginExists(t *testing.T) {
 
 	testUrl := "https://www.stealmylogin.com/demo.html"
-	doc := pingURL(testUrl)
+
+	doc, err := pingURL(testUrl)
+
+	if err != nil {
+		t.Errorf("Failed: could not ping url")
+	}
+
 	if !FindLogins(*doc) {
 		t.Errorf("Failed: login not found %s", testUrl)
 	}
 
 }
 
-func pingURL(url string) *goquery.Document {
+func pingURL(url string) (*goquery.Document, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
@@ -41,8 +53,8 @@ func pingURL(url string) *goquery.Document {
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return doc
+	return doc, nil
 }
