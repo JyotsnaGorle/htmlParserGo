@@ -30,9 +30,11 @@ func pingURL(urlToProccess string, finalResult *HtmlParseResult) error {
 	if err != nil {
 		return err
 	}
+
 	defer res.Body.Close()
+
 	if res.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
+		return fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 
 	// Load the HTML document
@@ -83,7 +85,7 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 
 			if err := pingURL(urlToProccess, &finalResult); err != nil {
-				http.Error(w, "404 bad url.", http.StatusNotFound)
+				http.Error(w, "Error reaching link: "+err.Error()+".", http.StatusBadRequest)
 			} else {
 				tmpl.Execute(w, finalResult)
 
@@ -119,6 +121,8 @@ func main() {
 
 	fmt.Printf("Starting server at localhost:8000...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println("****************")
+
 		log.Fatal(err)
 	}
 }
