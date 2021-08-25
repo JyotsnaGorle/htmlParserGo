@@ -63,10 +63,10 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		http.ServeFile(w, r, "templates/form.html")
+		http.ServeFile(w, r, "./frontend/templates/form.html")
 
 	case "POST":
-		tmpl := template.Must(template.ParseFiles("templates/layout.html"))
+		tmpl := template.Must(template.ParseFiles("./frontend/templates/layout.html"))
 
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -104,15 +104,15 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	fs := http.FileServer(http.Dir("./css"))
+	fs := http.FileServer(http.Dir("./frontend/css"))
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
 
-	js := http.FileServer(http.Dir("./js"))
+	js := http.FileServer(http.Dir("./frontend/js"))
 	http.Handle("/js/", http.StripPrefix("/js/", js))
 
 	http.HandleFunc("/", customRouteHandler)
 
-	fmt.Printf("Starting server for testing HTTP POST...\n")
+	fmt.Printf("Starting server at localhost:8000...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
