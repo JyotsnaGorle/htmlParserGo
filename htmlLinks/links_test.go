@@ -63,3 +63,16 @@ func TestFindLinksCount(t *testing.T) {
 		t.Errorf("Failed: did not detect external link, %s", testLink)
 	}
 }
+
+func TestFindInaccessibleLinksCount(t *testing.T) {
+
+	testLinks := []string{"https://www.github.com", "https://github.com/JyotsnaGorle/htmlParserGo"}
+
+	var invalidLinks []string
+
+	findInaccesibleLinks(testLinks, &invalidLinks)
+
+	if len(invalidLinks) != 1 {
+		t.Errorf("Failed: did not detect invalid link")
+	}
+}

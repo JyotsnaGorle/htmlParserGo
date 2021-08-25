@@ -59,7 +59,7 @@ func findInaccesibleLinks(links []string, invalidLinks *[]string) {
 
 	concurrencyLimit := 2
 
-	if len(links) > 1 {
+	if len(links) > 2 {
 		concurrencyLimit = len(links) / 2
 	}
 
