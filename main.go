@@ -80,12 +80,19 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
+
 			pingURL(urlToProccess, &finalResult)
 			tmpl.Execute(w, finalResult)
-			// 	w.Header().Set("Content-Type", "application/json")
-			// 	json.NewEncoder(w).Encode(finalResult)
-			// } else {
-			// 	http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+
+			/*
+				TO USE: in case of REST server application:
+				-------------------------------------------
+					w.Header().Set("Content-Type", "application/json")
+						json.NewEncoder(w).Encode(finalResult)
+					} else {
+						http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+			*/
+
 		} else {
 			http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
 		}
