@@ -91,7 +91,7 @@ func findInaccesibleLinks(links []string, invalidLinks *[]string) {
 func pingUrl(urlToPing string, invalidLinks *[]string) {
 	res, err := http.Get(urlToPing)
 	if err != nil {
-		*invalidLinks = append(*invalidLinks, urlToPing)
+		return
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
