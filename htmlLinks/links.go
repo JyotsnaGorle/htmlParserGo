@@ -3,6 +3,7 @@ package htmlLinks
 import (
 	"net/http"
 	"net/url"
+	"sync"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -55,14 +56,30 @@ func findInternalAndExternalLinks(urlToProccess string, internalLinks *[]string,
 }
 
 func findInaccesibleLinks(links []string, invalidLinks *[]string) {
+
+	gaurd := make(chan struct{}, 5)
+	wg := sync.WaitGroup{}
+
 	for _, link := range links {
 		_, err := url.Parse(link)
 		if err != nil {
 			return
 		}
 
-		pingUrl(link, invalidLinks)
+		gaurd <- struct{}{}
+
+		wg.Add(1)
+
+		go func(urlLink string) {
+
+			defer wg.Done()
+			pingUrl(urlLink, invalidLinks)
+
+			<-gaurd
+
+		}(link)
 	}
+	wg.Wait()
 }
 
 func pingUrl(urlToPing string, invalidLinks *[]string) {
