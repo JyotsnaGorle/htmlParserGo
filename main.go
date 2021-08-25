@@ -1,10 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"text/template"
 
 	helpers "htmlParserGo/helpers"
 	headings "htmlParserGo/htmlHeadings"
@@ -62,9 +62,11 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		http.ServeFile(w, r, "form.html")
+		http.ServeFile(w, r, "templates/form.html")
 
 	case "POST":
+		tmpl := template.Must(template.ParseFiles("templates/layout.html"))
+
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
@@ -75,11 +77,12 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 			pingURL(urlToProccess, &finalResult)
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(finalResult)
-		} else {
-			http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+			// 	w.Header().Set("Content-Type", "application/json")
+			// 	json.NewEncoder(w).Encode(finalResult)
+			// } else {
+			// 	http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
 		}
+		tmpl.Execute(w, finalResult)
 
 	default:
 		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
@@ -87,6 +90,10 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	fs := http.FileServer(http.Dir("./css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
+
 	http.HandleFunc("/", customRouteHandler)
 
 	fmt.Printf("Starting server for testing HTTP POST...\n")
