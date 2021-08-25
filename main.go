@@ -46,7 +46,7 @@ func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
 	}
 
 	finalResult.Version = version.CheckDoctype(html)
-	finalResult.Title = ""
+	finalResult.Title = doc.Find("title").Text()
 	finalResult.Headings = headings.FindHeadings(*doc)
 	finalResult.Links = links.FindLinks(*doc)
 	finalResult.HasLogin = login.FindLogins(*doc)
