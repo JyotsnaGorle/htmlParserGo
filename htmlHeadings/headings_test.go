@@ -13,7 +13,26 @@ func TestHtmlHeadings(t *testing.T) {
 
 	testUrl := "https://www.htmldog.com/guides/html/beginner/headings/"
 
-	expectedResult := map[string]int{"h1": 1, "h2": 4, "h3": 2, "h4": 0, "h5": 0, "h6": 0}
+	expectedResult := []HeadingsResult{
+		{
+			Heading: "h1",
+			Count:   1},
+		{
+			Heading: "h2",
+			Count:   4},
+		{
+			Heading: "h3",
+			Count:   2},
+		{
+			Heading: "h4",
+			Count:   0},
+		{
+			Heading: "h5",
+			Count:   0},
+		{
+			Heading: "h6",
+			Count:   0},
+	}
 
 	doc := pingURL(testUrl)
 	result := FindHeadings(*doc)
