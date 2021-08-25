@@ -2,11 +2,44 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">  
-    <title>Go To-Do list</title>
+    <title>URL Parser - Results</title>
   </head>
   <body>
-    <p>
-      To-Do list for user: {{ .Title }} 
-    </p>
+    <div class="centered">
+    <section class="section meta">
+      <p>Link: {{.UrlToParse}}</p>
+      <p>Html version: {{ .Version }}</p>
+      <p>Title : {{ .Title }}</p>
+    </section>
+    
+    <section class="section heading">
+      <p>Heading count:</p>
+      <ul>
+        {{range .Headings}}
+          <li class="heading_name">{{.Heading}}: {{.Count}}</li>
+        {{end}}
+      </ul>
+    </section>
+    
+    <section class="section links">
+      <p>Links:</p>
+      <ul>
+          <li class="internal">{{.Links.Internal}}</li>
+          <li class="external">{{.Links.External}}</li>
+          <li class="inaccesible">{{.Links.Inaccesable}}</li>
+      </ul>
+    </section>
+
+    <section class="section login">
+      <p>
+        {{if .HasLogin}}
+            <p>Has a login form</p>
+        {{else}}
+            <p>No Login form found</p>
+        {{end}}
+      </p>
+    </section>
+  </div>
+
   </body>
 </html>

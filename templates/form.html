@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <title>URL Parser</title>    
-  <link rel="stylesheet" type="text/css" href="css/style.css">   
+  <link rel="stylesheet" type="text/css" href="css/style.css"> 
+  <script src="js/script.js"></script>  
 </head>
 <body>
-<div>
-  <form method="POST" action="/">     
-      <label>URL</label><input name="urlToProccess" type="text" value="" />
-      <input type="submit" value="submit" />
-  </form>
-</div>
+  <div class="centered urlInput">
+    <form method="POST" action="/">     
+        <input class="url" id="urlToProccess" name="urlToProccess" placeholder="http://www.domain-adress.com" type="text" value="" />
+        <!-- <input class="submit" id="send" type="submit" value="submit" /> -->
+        <button type="submit" id="send" class="button" onclick="this.classList.toggle('button--loading')">
+          <span class="button__text">Parse</span>
+      </button>
+    </form>
+  </div>
 </body>
 </html>

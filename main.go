@@ -16,11 +16,12 @@ import (
 )
 
 type HtmlParseResult struct {
-	Version  string
-	Title    string
-	Headings []headings.HeadingsResult
-	Links    links.Links
-	HasLogin bool
+	UrlToParse string
+	Version    string
+	Title      string
+	Headings   []headings.HeadingsResult
+	Links      links.Links
+	HasLogin   bool
 }
 
 func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
@@ -72,20 +73,25 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		finalResult := HtmlParseResult{}
 		urlToProccess := r.FormValue("urlToProccess")
+
+		finalResult := HtmlParseResult{
+			UrlToParse: urlToProccess,
+		}
 
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 			pingURL(urlToProccess, &finalResult)
+			tmpl.Execute(w, finalResult)
 			// 	w.Header().Set("Content-Type", "application/json")
 			// 	json.NewEncoder(w).Encode(finalResult)
 			// } else {
 			// 	http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+		} else {
+			http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
 		}
-		tmpl.Execute(w, finalResult)
 
 	default:
-		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
+		fmt.Fprintf(w, "Only GET and POST methods are supported.")
 	}
 }
 
@@ -93,6 +99,9 @@ func main() {
 
 	fs := http.FileServer(http.Dir("./css"))
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
+
+	js := http.FileServer(http.Dir("./js"))
+	http.Handle("/js/", http.StripPrefix("/js/", js))
 
 	http.HandleFunc("/", customRouteHandler)
 

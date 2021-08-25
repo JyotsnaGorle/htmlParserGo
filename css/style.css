@@ -1,7 +1,105 @@
-body  
+html, body  
 {  
-    margin: 0;  
-    padding: 0;  
-    background-color:#6abadeba;  
-    font-family: 'Arial';  
+    margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: helvetica;
+	vertical-align: baseline;
 }  
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    
+    font-size: 20px;
+    background-color: #e91e632e;
+    border: #e91e63 1px solid;
+    padding: 25px;
+    z-index: 100;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .urlInput {
+      text-align: center;
+      width: 50%;
+  }
+
+  input.url {
+    padding: 10px;
+    font-size: 20px;
+    border: #c7c6c6 1px solid;
+    border-radius: 5px;
+    width: 60%;
+  }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #a4a4a4;
+    opacity: 1; /* Firefox */
+  }
+  
+  .button {
+    position: relative;
+    padding: 8px 16px;
+    border: none;
+    background: #e91e63;
+    outline: none;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  
+  .button:active, .button:hover {
+    background: #e91e63;
+  }
+
+  .button:disabled{
+    pointer-events: none;
+    background: #e68baa;
+
+  }
+  
+  .button__text {
+    font: bold 20px "Quicksand", san-serif;
+    color: #ffffff;
+    transition: all 0.2s;
+  }
+
+  .button--loading .button__text {
+    visibility: hidden;
+    opacity: 0;
+  }
+  
+  .button--loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+  }
+  
+  @keyframes button-loading-spinner {
+    from {
+      transform: rotate(0turn);
+    }
+  
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
