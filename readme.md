@@ -1,8 +1,35 @@
-This is a sample Page.
+## HTML Parser using Golang and Go-templates
 
-- HTML Version
-- Page Title
-- Headings count by level
-- Amount of internal and external links
-- Amount of inaccessible links
-- If a page contains a login form
+A simple web application used to parse an html url for meta information.
+
+## Software requirements
+	* Recommended IDE Visual Studio Code.
+    * Installed Golang in the machine. 
+    * Use the following [link](https://golang.org/doc/install) for Golang installation.
+
+## Build and Run the application
+	* In order to build the project: type the command ``go build main.go`` in the root folder via the terminal.
+	* To run the built binary, use ``go run main.go`` in the root folder via the terminal.
+
+## Sample output
+
+    Link: https://www.github.com/
+    Html version: HTML 5
+    Title : GitHub: Where the world builds software · GitHub
+    ----------------------------------------------------------
+    Heading count:
+        - h2: 19
+        - h3: 22
+        - h4: 7
+        - h5: 0
+        - h6: 0
+        - h1: 1
+    ----------------------------------------------------------
+    Links:
+        - Internal links count: 72
+        - External links count: 44
+        - Inaccesable links count: 1
+    
+    ----------------------------------------------------------
+    No Login form found
+    ----------------------------------------------------------
