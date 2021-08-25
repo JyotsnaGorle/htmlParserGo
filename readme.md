@@ -13,7 +13,7 @@ A simple web application used to parse a url for meta information in the html pa
 	* To run the built binary, use ``go run main.go`` in the root folder via the terminal.
     * The application runs server in ``localhost:8000`` which can then be accessed by any browser.
 
-## Sample output
+## Sample output - in web
 
     Link: https://www.github.com/
     Html version: HTML 5
