@@ -53,15 +53,6 @@ func pingURL(urlToProccess string, finalResult *HtmlParseResult) {
 
 }
 
-// func main() {
-// 	// https://www.stealmylogin.com/demo.html
-// 	// "https://www.htmldog.com/guides/html/beginner/headings/"
-
-// 	urlToProccess := "https://www.github.com/"
-// 	helpers.IsValidUrl(urlToProccess)
-// 	pingURL(urlToProccess)
-// }
-
 func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/" {
@@ -72,28 +63,23 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		http.ServeFile(w, r, "form.html")
+
 	case "POST":
-		// Call ParseForm() to parse the raw query and update r.PostForm and r.Form.
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
 		}
-		// fmt.Fprintf(w, "Post from website! r.PostFrom = %v\n", r.PostForm)
-		finalResult := HtmlParseResult{}
 
+		finalResult := HtmlParseResult{}
 		urlToProccess := r.FormValue("urlToProccess")
 
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 			pingURL(urlToProccess, &finalResult)
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(finalResult)
+		} else {
+			http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
 		}
-
-		// fmt.Fprintf(w, "urlToProccess = %s\n", urlToProccess)
-
-		w.Header().Set("Content-Type", "application/json")
-
-		fmt.Println(finalResult)
-
-		json.NewEncoder(w).Encode(finalResult)
 
 	default:
 		fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
