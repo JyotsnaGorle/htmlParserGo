@@ -11,7 +11,7 @@ A simple web application used to parse a url for meta information in the html pa
 ## Build and Run the application
 	* In order to build the project: type the command ``go build main.go`` in the root folder via the terminal.
 	* To run the built binary, use ``go run main.go`` in the root folder via the terminal.
-    * The application runs server in ``localhost:8000`` which can then be accessed by any browser.
+    * The application runs server in ``localhost:8080`` which can then be accessed by any browser.
 
 ## Run unit tests
     * Via the terminal in the project folder : to run all tests - ``go test .\...``
