@@ -9,6 +9,10 @@ type HeadingsResult struct {
 	Count   int
 }
 
+/* FindHeadings: Find frequency of all heading levels in html document.
+   Param: doc (goquery.Document) html-document
+   Returns: list of []HeadingResult.
+*/
 func FindHeadings(doc goquery.Document) []HeadingsResult {
 
 	headingLevels := map[string]int{"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}

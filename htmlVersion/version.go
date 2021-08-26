@@ -15,6 +15,10 @@ func init() {
 	doctypes["HTML 5"] = `<!DOCTYPE html>`
 }
 
+/* CheckDoctype: checks the html string for HTML version.
+   Param: html (string)
+   Returns: string
+*/
 func CheckDoctype(html string) string {
 	var version = "UNKNOWN"
 

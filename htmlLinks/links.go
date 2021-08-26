@@ -14,6 +14,11 @@ type Links struct {
 	Inaccesable int
 }
 
+/* FindLinks: In a html document, finds
+   Internal, External and Inaccesable links.
+   Param: doc (goquery.Document) html-document
+   Returns: Links
+*/
 func FindLinks(doc goquery.Document) Links {
 
 	var internalLinks []string
@@ -66,6 +71,7 @@ func findInaccesibleLinks(links []string, invalidLinks *[]string) {
 	gaurd := make(chan struct{}, concurrencyLimit)
 	wg := sync.WaitGroup{}
 
+	// check links concurrently
 	for _, link := range links {
 		_, err := url.Parse(link)
 		if err != nil {
@@ -88,9 +94,13 @@ func findInaccesibleLinks(links []string, invalidLinks *[]string) {
 	wg.Wait()
 }
 
+// ping urls to check accesibility
 func pingUrl(urlToPing string, invalidLinks *[]string) {
+
 	res, err := http.Get(urlToPing)
+
 	if err != nil {
+		*invalidLinks = append(*invalidLinks, urlToPing)
 		return
 	}
 	defer res.Body.Close()

@@ -7,6 +7,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+/* FindLogins: Check if a html document has a login form:
+   Param: doc (goquery.Document) html-document
+   Returns: boolean
+*/
 func FindLogins(doc goquery.Document) bool {
 
 	var foundLogin bool

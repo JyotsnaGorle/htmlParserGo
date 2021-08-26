@@ -26,23 +26,26 @@ type HtmlParseResult struct {
 
 func pingURL(urlToProccess string, finalResult *HtmlParseResult) error {
 
+	// Fetch the url response
 	res, err := http.Get(urlToProccess)
 	if err != nil {
 		return err
 	}
 
+	// close body at the end
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
 		return fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 
-	// Load the HTML document
+	// Load the reponse body
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		return err
 	}
 
+	// Load the HTML document
 	html, err := doc.Html()
 	if err != nil {
 		return err
