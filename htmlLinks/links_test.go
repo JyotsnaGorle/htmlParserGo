@@ -65,7 +65,7 @@ func TestFindLinksCount(t *testing.T) {
 
 func TestFindInaccessibleLinksCount(t *testing.T) {
 
-	testLinks := []string{"https://www.github.com", "/JyotsnaGorle/htmlParserGo"}
+	testLinks := []string{"https://www.github.com", "/JyotsnaGorle/htmlParserGo", "https://www.github.com/JyotsnaGorle/htmlParserGo"}
 
 	var invalidLinks []string
 

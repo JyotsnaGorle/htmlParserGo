@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"text/template"
 
 	helpers "htmlParserGo/helpers"
 	headings "htmlParserGo/htmlHeadings"
@@ -22,6 +22,10 @@ type HtmlParseResult struct {
 	Headings   []headings.HeadingsResult
 	Links      links.Links
 	HasLogin   bool
+}
+
+type parseError struct {
+	ErrorMsg string
 }
 
 func pingURL(urlToProccess string, finalResult *HtmlParseResult) error {
@@ -72,7 +76,6 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./frontend/templates/form.html")
 
 	case "POST":
-		tmpl := template.Must(template.ParseFiles("./frontend/templates/layout.html"))
 
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -88,8 +91,22 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 		if isValid := helpers.IsValidUrl(urlToProccess); isValid {
 
 			if err := pingURL(urlToProccess, &finalResult); err != nil {
-				http.Error(w, "Error reaching link: "+err.Error()+".", http.StatusBadRequest)
+				/*
+					TO USE: in case of REST server application:
+					-------------------------------------------
+					http.Error(w, "Error reaching link: "+err.Error()+".", http.StatusBadRequest)
+				*/
+
+				errResult := parseError{
+
+					ErrorMsg: err.Error(),
+				}
+
+				tmpl := template.Must(template.ParseFiles("./frontend/templates/error.html"))
+				tmpl.Execute(w, errResult)
+
 			} else {
+				tmpl := template.Must(template.ParseFiles("./frontend/templates/layout.html"))
 				tmpl.Execute(w, finalResult)
 
 			}
@@ -104,7 +121,19 @@ func customRouteHandler(w http.ResponseWriter, r *http.Request) {
 			*/
 
 		} else {
-			http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+			errResult := parseError{
+
+				ErrorMsg: "400. Sorry, that is an invalid parameter value.",
+			}
+
+			tmpl := template.Must(template.ParseFiles("./frontend/templates/error.html"))
+			tmpl.Execute(w, errResult)
+
+			/*
+				TO USE: in case of REST server application:
+				-------------------------------------------
+				http.Error(w, "400 invalid parameter value.", http.StatusBadRequest)
+			*/
 		}
 
 	default:
@@ -122,7 +151,7 @@ func main() {
 
 	http.HandleFunc("/", customRouteHandler)
 
-	fmt.Printf("Starting server at localhost:8000...\n")
+	fmt.Printf("Starting server at localhost:8080...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		fmt.Println("****************")
 
